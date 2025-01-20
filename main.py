@@ -7,12 +7,9 @@ from selenium.common.exceptions import NoSuchElementException, StaleElementRefer
 import time
 import threading
 import press_xp_clicker
-import chest_press
+import chest_press # type: ignore
 import duo_lingo
 import stocks
-
-
-import time
 
 # Define custom User-Agent
 user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
@@ -26,7 +23,7 @@ driver = webdriver.Chrome(options=chrome_options)
 
 driver.get("https://neal.fun/stimulation-clicker/")
 
-driver.implicitly_wait(0)
+# driver.implicitly_wait(0)
 
 click_wait = 10
 upgrade_clicks = 0

@@ -67,11 +67,20 @@ def click_xp_or_press(driver):
                 time.sleep(5)
 
             #logic to collect the tomogachi eggs
-            eggs = driver.find_elements(By.CLASS_NAME, 'egg-part egg-to')
+            eggs = driver.find_elements(By.CLASS_NAME, 'egg-part egg-top')
 
             try:
+
                 for egg in eggs:
                     egg.click()
+
+                try:
+                    feed = driver.find_element(By.CLASS_NAME, 'action-btn')
+                    feed.click()
+
+                except NoSuchElementException:
+                    print("no need to feed")
+                    continue
 
             except ElementClickInterceptedException:
                 print("no eggs to collect")

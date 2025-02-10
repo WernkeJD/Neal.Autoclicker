@@ -4,6 +4,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException, ElementClickInterceptedException
+import undetected_chromedriver as uc
 import time
 import threading
 import press_xp_clicker
@@ -19,7 +20,7 @@ chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument(f"user-agent={user_agent}")
 
 # Initialize the WebDriver with the custom options
-driver = webdriver.Chrome(options=chrome_options)
+driver = uc.Chrome(options=chrome_options)
 
 driver.get("https://neal.fun/stimulation-clicker/")
 
@@ -31,28 +32,31 @@ upgrade_clicks = 0
 start_time = time.time()
 
 #start concurrent threads here
-press_xp_thread = threading.Thread(target=press_xp_clicker.click_xp_or_press, args=(driver,)) 
+#press_xp_thread = threading.Thread(target=press_xp_clicker.click_xp_or_press, args=(driver,)) 
 press_chest = threading.Thread(target=chest_press.chest_press, args=(driver,))
 lingo_script = threading.Thread(target=duo_lingo.answer_lingo, args=(driver,))
-stock_thread = threading.Thread(target=stocks.trade, args=(driver,))
-press_xp_thread.daemon = True
+#stock_thread = threading.Thread(target=stocks.trade, args=(driver,))
+#press_xp_thread.daemon = True
 press_chest.daemon = True
 lingo_script.daemon = True
-stock_thread.daemon = True
-press_xp_thread.start()
+#stock_thread.daemon = True
+#press_xp_thread.start()
 press_chest.start()
 lingo_script.start()
-stock_thread.start()
+#stock_thread.start()
 
 while True:
     if time.time() - start_time < click_wait:
         try:            
             button = driver.find_element(By.CLASS_NAME, 'main-btn')
-            button.click()
+            for i in range(100):
+                button.click()
+
         except ElementClickInterceptedException:
             try:
                 button = driver.find_element(By.CLASS_NAME, 'main-btn main-btn-pretty') 
-                button.click()
+                for i in range(100):
+                    button.click()
             except NoSuchElementException:
                 print("no button to click")
 
@@ -66,7 +70,7 @@ while True:
                 if upgrades.index(upgrade) == 0 and upgrade_clicks > 100:
                     continue
                 
-                if upgrades.index(upgrade) == 1 and upgrade_clicks > 30:
+                if upgrades.index(upgrade) == 1 and upgrade_clicks > 20:
                     continue
 
                 upgrade.click()
@@ -75,8 +79,11 @@ while True:
                 else:
                     upgrade_clicks += 1
 
-                if time.time() - inner_start_time > 2:
+                if time.time() - inner_start_time > 1:
                     break
+
+            press_xp_clicker.click_xp_or_press(driver)
+            stocks.trade(driver)
 
         except NoSuchElementException:
             # If the element is not found, continue to the next iteration

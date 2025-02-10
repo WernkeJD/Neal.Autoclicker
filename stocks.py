@@ -6,7 +6,11 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import NoSuchElementException, ElementClickInterceptedException, ElementNotInteractableException
 import re
 
+
+#check stock profit element instead of just the stock price when determining buy or sell orders.
 def trade(driver):
+    start_time = time.time()
+
     while True:
         try:
 
@@ -28,19 +32,30 @@ def trade(driver):
                     continue  # Try again if element isn't found
 
                 try:
-                    buy = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__layout"]/div/div/div[4]/div[4]/div[2]/button[1]')))
+                    buy = driver.find_element(By.XPATH, '//*[@id="__layout"]/div/div/div[4]/div[4]/div[2]/button[1]')
+
                 except NoSuchElementException:
-                    print("cant get buy button")
+                    print("cant buy")
+                    try:
+                        buy = driver.find_element(By.XPATH, '//*[@id="__layout"]/div/div/div[6]/div[4]/div[2]/button[1]')
+                    except NoSuchElementException:
+                        print("still can't find buy")
+
             
                 try:
                     sell = driver.find_element(By.XPATH, '//*[@id="__layout"]/div/div/div[4]/div[4]/div[2]/button[2]')
                 except NoSuchElementException:
                     print("Cant find sell button")
+                    try:
+                        sell = driver.find_element(By.XPATH, '//*[@id="__layout"]/div/div/div[6]/div[4]/div[2]/button[2]')
+                    except NoSuchElementException:
+                        print("still cant find sell")
+
                 except ElementNotInteractableException:
                     print("can't interact with sell button")
 
                 price_text = price.text
-                clean_price = re.sub(r"[$,]", "", price_text)
+                clean_price = re.sub(r"[$,xX2]", "", price_text)
                 print("cleaned price: ", clean_price)
 
 
@@ -50,18 +65,20 @@ def trade(driver):
                         buy.click()
                         i += 1
                         buy_clicks += 1
-                elif int(clean_price) > 40000 and buy_clicks != 0:
+                elif int(clean_price) > 25000 and buy_clicks != 0:
                     print("selling")
                     for i in range(buy_clicks):
                         sell.click()
                         i += 1
                         buy_clicks -= 1
                 else:
-                    time.sleep(5)
-                    continue
+                    break
 
         except NoSuchElementException:
             print("no such element")
-            time.sleep(30)
+            time.sleep(2)
         except ElementClickInterceptedException:
             print("click intercepted")
+    
+        if time.time() - start_time > 2:
+            break

@@ -11,7 +11,7 @@ def chest_press(driver):
             
             if not chest_buttons:
                 print('No chests found')
-                time.sleep(5)
+                time.sleep(2)
                 continue  # Wait and try again if no chests are found
 
             for chest_button in chest_buttons:
@@ -36,6 +36,6 @@ def chest_press(driver):
 
         except NoSuchElementException:
             print('no chests')
-            time.sleep(5)
+            time.sleep(2)
 
         time.sleep(2)

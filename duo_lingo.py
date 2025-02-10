@@ -13,7 +13,7 @@ def answer_lingo(driver):
 
             questions = driver.find_elements(By.CLASS_NAME, 'question-choice')
 
-            answers = ["S", "E", "mt", "Hwyl far", "Death", "Mandarin", "Gemealez", "Shiin", "&", "Yurok", "Octopi or octopuses", "Half a mile", "Sneaked or snuck", "Jury", "Welsh", "Around 7,100", "Scottish", "Esperanto", "Seafood", "Polish", "Potate", "Nostalgic longing", "Vengence", "Undigested prey", "Witches", "Vertebrae", "A grumble", "Palindrome", "270 degrees", "Q", "German", "Dust"]
+            answers = ["S", "E", "mt", "Hwyl far", "Death", "Mandarin", "Gemealez", "Shiin", "&", "Yurok", "Octopi or octopuses", "Half a mile", "Sneaked or snuck", "Jury", "Welsh", "Around 7,100", "Scottish", "Esperanto", "Seafood", "Polish", "Potate", "Nostalgic longing", "Vengence", "Undigested prey", "Witches", "Vertebrae", "A grumble", "Palindrome", "270 degrees", "Q", "German", "Dust", "All of the above", "Rough"]
 
             for question in questions:
                 question_text = question.text

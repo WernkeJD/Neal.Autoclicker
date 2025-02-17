@@ -9,7 +9,6 @@ def click_xp_or_press(driver):
         try:
             xp_button = driver.find_element(By.CLASS_NAME, 'reward')
             xp_button_collect = driver.find_element(By.CLASS_NAME, 'collect') 
-            eggs = driver.find_elements(By.CLASS_NAME, 'egg')
 
             
             #xp button handling
@@ -34,62 +33,7 @@ def click_xp_or_press(driver):
                 print("Can't interact with xp")
             except StaleElementReferenceException:
                 print("Can't interact with xp")
-            
-            #hydrolic press handling (does not work currently)
-
-            # hydrolic_press_start = driver.find_element(By.CLASS_NAME, 'press-btn')  
-            # collect_press = driver.find_element(By.CLASS_NAME, 'press-collect press-collect-hide')
-
-            # try:                
-            #     ActionChains(driver).move_to_element(hydrolic_press_start).perform()
-            #     hydrolic_press_start.click()
-            #     print("press clicked")
-            # except ElementClickInterceptedException:
-            #     print("no press start")
-            #     time.sleep(5)
-            # except ElementNotInteractableException:
-            #     print("Can't interact with press")
-            #     time.sleep(5)  
-
-            # try:
-            #     ActionChains(driver).move_to_element(collect_press).perform()
-            #     collect_press.click()
-            #     print("press collected")
-            # except ElementClickInterceptedException:
-            #     print("no press collect")
-            #     time.sleep(5)
-            # except ElementNotInteractableException:
-            #     print("Can't interact with press collect")
-            #     time.sleep(5)
-
-            #logic to collect the tomogachi eggs
-            eggs = driver.find_elements(By.CLASS_NAME, 'egg')
-
-            if len(eggs) > 0:
-                print("here is the eggs: ", eggs)
-
-            try:
-
-                for egg in eggs:
-                    print("clicking eggs")
-                    ActionChains(driver).move_to_element(egg).perform()
-                    egg.click()
-
-                try:
-                    feed = driver.find_element(By.CLASS_NAME, 'action-btn')
-                    feed.click()
-
-                except NoSuchElementException:
-                    print("no need to feed")
-                    continue
-
-            except ElementClickInterceptedException:
-                print("no eggs to collect")
-            except ElementNotInteractableException:
-                print("Can't interact with eggs collect")
     
-            
-
         except NoSuchElementException:
             print("No pop-ups found, breaking loop")
             break

@@ -55,30 +55,33 @@ def trade(driver):
                     print("can't interact with sell button")
 
                 price_text = price.text
-                clean_price = re.sub(r"[$,xX2]", "", price_text)
-                print("cleaned price: ", clean_price)
+                clean_price = re.sub(r"[$,]", "", price_text)
+                price_only = re.split(r"\s*x\s*", clean_price)[0]
+                print("cleaned price: ", price_only)
 
 
-                if int(clean_price) < 5000:
+                if int(price_only) < 5000 and buy_clicks <= 6:
                     print('buying')
                     for i in range(3):
                         buy.click()
                         i += 1
                         buy_clicks += 1
-                elif int(clean_price) > 25000 and buy_clicks != 0:
+                elif int(price_only) > 30000 and buy_clicks != 0:
                     print("selling")
                     for i in range(buy_clicks):
                         sell.click()
                         i += 1
                         buy_clicks -= 1
-                else:
-                    break
+                # else:
+                #     break
 
         except NoSuchElementException:
             print("no such element")
-            time.sleep(2)
+            time.sleep(10)
         except ElementClickInterceptedException:
             print("click intercepted")
+            time.sleep(10)
+
     
-        if time.time() - start_time > 2:
-            break
+        # if time.time() - start_time > 2:
+        #     break
